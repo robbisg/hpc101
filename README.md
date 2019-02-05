@@ -36,5 +36,5 @@ Then type ```sudo netplan apply``` to apply your edits (type ```ifconfig``` to v
 
 Editing the file ```/etc/hosts``` is not mandatory, it can be useful to let the nodes be accessible by their name rather than their IPs.
 
-Now you can setup Kubernetes[kubernetes.md], Slurm[slurm.md].
+Now you can setup [Kubernetes](kubernetes.md), [Slurm](slurm.md).
 
