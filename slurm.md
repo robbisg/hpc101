@@ -70,7 +70,7 @@ SlurmdLogFile=/var/log/slurm-llnl/slurmd.log
 #
 # COMPUTE NODES
 NodeName=master NodeAddr=192.168.100.100 NodeHostname=master CPUs=2 State=UNKNOWN
-NodeName=node01 NodeAddr=192.168.100.101 CPUs=2 State=UNKNOWN
+NodeName=node01 NodeAddr=192.168.100.101 CPUs=2 State=IDLE
 
 # PARTITIONS
 PartitionName=debug Default=YES MaxTime=INFINITE State=UP Nodes=master,node01
@@ -88,7 +88,85 @@ sudo systemctl enable slurmd
 sudo systemctl start slurmd
 ```
 
+## Cluster checking
 
+Check if the partitions have been detected:
+```bash
+sinfo
 
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+debug*       up   infinite      2   idle master,node01
+```
 
+If nodes and nodelist are the same as in your configuration file, it is ok!!
+
+Then check the status of your nodes
+```bash
+scontrol show node
+
+NodeName=master Arch=x86_64 CoresPerSocket=2
+   CPUAlloc=0 CPUErr=0 CPUTot=2 CPULoad=0.70
+   AvailableFeatures=(null)
+   ActiveFeatures=(null)
+   Gres=(null)
+   NodeAddr=192.168.100.100 NodeHostName=master Version=17.11
+   OS=Linux 4.15.0-45-generic #48-Ubuntu SMP Tue Jan 29 16:28:13 UTC 2019 
+   RealMemory=1 AllocMem=0 FreeMem=82 Sockets=1 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=debug 
+   BootTime=2019-01-31T15:24:07 SlurmdStartTime=2019-02-01T15:07:31
+   CfgTRES=cpu=2,mem=1M,billing=2
+   AllocTRES=
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node01 Arch=x86_64 CoresPerSocket=2
+   CPUAlloc=0 CPUErr=0 CPUTot=2 CPULoad=0.20
+   AvailableFeatures=(null)
+   ActiveFeatures=(null)
+   Gres=(null)
+   NodeAddr=192.168.100.101 NodeHostName=node01 Version=17.11
+   OS=Linux 4.15.0-45-generic #48-Ubuntu SMP Tue Jan 29 16:28:13 UTC 2019 
+   RealMemory=1 AllocMem=0 FreeMem=323 Sockets=1 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=debug 
+   BootTime=2019-01-31T15:26:40 SlurmdStartTime=2019-02-01T15:07:53
+   CfgTRES=cpu=2,mem=1M,billing=2
+   AllocTRES=
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+```
+
+Sometimes it may happen that node status is ```State=DOWN+DRAIN```
+This is showed also when typing ```sinfo```
+```bash
+sinfo 
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+debug*       up   infinite      1  drain node01
+debug*       up   infinite      1   idle master
+```
+
+To wake up the node you need to type on your master:
+```bash
+sudo scontrol update NodeName=node01 State=IDLE
+```
+
+Then ```sinfo``` should look like:
+```bash
+sinfo
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+debug*       up   infinite      2   idle master,node01
+```
+
+Now you can start a task in your node to see if computation is distributed.
+```bash
+srun -N2 hostname
+node01
+master
+```
+
+Now your slurm scheduler is ok!! 
 
