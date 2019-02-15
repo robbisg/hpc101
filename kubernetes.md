@@ -101,7 +101,7 @@ To launch pods on the master node.
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
-### Reset network
+### Reset cluster
 On each node
 ```bash
 sudo su -
