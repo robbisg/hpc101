@@ -142,6 +142,7 @@ NodeName=node01 Arch=x86_64 CoresPerSocket=2
 
 Sometimes it may happen that node status is ```State=DOWN+DRAIN```
 This is showed also when typing ```sinfo```
+
 ```bash
 sinfo 
 PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
@@ -162,6 +163,7 @@ debug*       up   infinite      2   idle master,node01
 ```
 
 Now you can start a task in your node to see if computation is distributed.
+
 ```bash
 srun -N2 hostname
 node01
@@ -169,4 +171,28 @@ master
 ```
 
 Now your slurm scheduler is ok!! 
+
+# Useful commands
+
+We showed some useful commands as ```sinfo``` and ```scontrol show node```.
+
+Using ```squeue``` you can see the list of jobs launched on the cluster.
+```bash
+squeue
+
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+                73     debug dask-wor   robbis  R       5:23      1 master
+                74     debug dask-wor   robbis  R       5:23      1 master
+                75     debug dask-wor   robbis  R       5:20      1 node01
+                76     debug dask-wor   robbis  R       5:20      1 node01
+```
+
+Using ```scancel``` you can kill these jobs as well, where argument is the PID of the job.
+
+```bash
+scancel 73
+```
+
+
+
 
