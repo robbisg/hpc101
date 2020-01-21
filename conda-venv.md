@@ -34,14 +34,30 @@ You can add and remove package at will!
 Packages with ```--editable``` are downloaded from ```github``` and installed, the symbol ```@``` is used to select
 a particular branch if you need it, while ```egg``` keyword is used to give a namespace to this package.
 
-Then you can do:
-
+Then you can create the environment using:
 ```bash
 conda env create -f neuropy.yml
+```
+To enter the environment
+```bash
 conda activate neuropy
+```
+This is used to exit the environment
+```bash
 conda deactivate
+```
+and to update the environment:
+```bash
 conda env update -f=neuropy.yml
 ```
 
-First guy create the environment, after creation you can enter by using second guy and leave using third. Last line
-is used to update the environment.
+If you need to list all the environments
+```bash
+conda env list
+```
+
+While if you need to remove the environment just do:
+```bash
+conda remove --name myenv --all
+```
+
