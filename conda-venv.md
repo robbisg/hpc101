@@ -60,4 +60,18 @@ While if you need to remove the environment just do:
 ```bash
 conda remove --name myenv --all
 ```
+# Triton commands
 
+module load miniconda 
+conda env create -n test_env --file requirements.yml
+
+https://scicomp.aalto.fi/triton/tut/storage.html#rsync
+
+module load miniconda conda env create -n test_env --file requirements.yml
+source activate test_env
+
+https://scicomp.aalto.fi/triton/apps/jupyter.html#installing-kernels-from-virtualenvs-or-anaconda-environments
+https://scicomp.aalto.fi/triton/tut/storage.html#remote-mounting-using-smb
+
+envkernel conda --user --name test_env --display-name "test_env" ~/.conda/envs/test_env
+conda install jupyter
